@@ -1,3 +1,3 @@
-b = divmod(0,9)
+b = divmod(12,9)
 
 print(b)

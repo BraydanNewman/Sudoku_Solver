@@ -1,28 +1,39 @@
 import random
 from tkinter import *
 import tkinter as tk
-window=Tk()
+
+window = Tk()
 window.title("SUDOKO")
-table = [ ]
-number_table = [ ]
+table = []
+number_table = []
 
 
 def make_board():
-    for i in range(0,9):
+    for i in range(0, 9):
         cols = []
-        for j in range(0,9):
+        for j in range(0, 9):
             enterText = tk.StringVar()
             e = Entry(window, width=5, font=60, textvariable=enterText)
-            enterText.set(str(random.randint(3, 9)))
+            lol = random.randint(0, 4)
+            if lol == 3:
+                enterText.set(str(random.randint(1, 9)))
             e.grid(row=i, column=j)
             cols.append(e)
         table.append(cols)
     solve_b = Button(window, text="Solve", command=backtracking)
     solve_b.grid(row=9, column=0, columnspan=9, sticky=NSEW)
 
+
 def backtracking():
+    def full_check(x, y):
+        check = 
+        if row_check(y):
+            return True
+        elif
+
     def row_check(y):
-        if len(number_table[y]) == len(set(number_table[y])):
+        temp_list = [i for i in number_table[y] if i != '']
+        if len(temp_list) == len(set(temp_list)):
             check = True
         else:
             check = False
@@ -32,14 +43,16 @@ def backtracking():
         column = []
         for i in range(9):
             column.append(number_table[i][x])
-        if len(column) == len(set(column)):
+        temp_list = [i for i in column if i != '']
+        if len(temp_list) == len(set(temp_list)):
             check = True
         else:
             check = False
         return check
 
-    def square_check(x,y):
+    def square_check(x, y):
         square = []
+
         def quad_check(num):
             if num < 3:
                 x_multiplier = 0
@@ -48,6 +61,7 @@ def backtracking():
             else:
                 x_multiplier = 2
             return x_multiplier
+
         x_cord = quad_check(x) * 3
         y_cord = quad_check(y) * 3
 
@@ -55,8 +69,8 @@ def backtracking():
             for j in range(3):
                 temp = number_table[y_cord + j][x_cord + i]
                 square.append(temp)
-
-        if len(square) == len(set(square)):
+        temp_list = [i for i in square if i != '']
+        if len(temp_list) == len(set(temp_list)):
             check = True
         else:
             check = False
@@ -65,16 +79,16 @@ def backtracking():
     def extract_numbers():
         number_table.clear()
         for _rows in table:
-            temp = []
+            temp = [ ]
             for _item in _rows:
                 temp.append(_item.get())
             number_table.append(temp)
 
     for rows in table:
-        for item  in rows:
+        for item in rows:
             item.config(state=DISABLED)
 
-# False if double
+    # False if double
     extract_numbers()
     static_table = number_table
 
@@ -85,11 +99,22 @@ def backtracking():
         extract_numbers()
 
         pos_check = divmod(cell_num, 9)
+        if static_table[pos_check[0]][pos_check[1]] is None:
+            if number_table[pos_check[0]][pos_check[1]] is not None:
+                number_table[pos_check[0]][pos_check[1]] = number_table[pos_check[0]][pos_check[1]] + 1
+            else:
+                number_table[pos_check[0]][pos_check[1]] = 1
 
+        else:
+            cell_num = cell_num + 1
         if row_check(pos_check[0]) and column_check(pos_check[1]) and square_check(pos_check[1], pos_check[0]):
             cell_num = cell_num + 1
         else:
-            pass
+            if number_table[pos_check[0]][pos_check[1]] == 9:
+                pass
+            else:
+                number_table[pos_check[0]][pos_check[1]] = number_table[pos_check[0]][pos_check[1]] + 1
+
 
 if __name__ == "__main__":
     make_board()
