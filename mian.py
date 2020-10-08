@@ -16,6 +16,8 @@ def make_board():
         table.append(cols)
     solve_b = Button(window, text="Solve", command=backtracking)
     solve_b.grid(row=9, column=0, columnspan=9, sticky=NSEW)
+    clear_b = Button(window, text="Clear", command=clear)
+    clear_b.grid(row=10, column=0, columnspan=9, sticky=NSEW)
 
 
 def backtracking():
@@ -26,7 +28,7 @@ def backtracking():
             return False
 
     def row_check(y):
-        temp_list = [i for i in number_table[y] if i != '']
+        temp_list = [j for j in number_table[y] if j != '']
         if len(temp_list) == len(set(temp_list)):
             check = True
         else:
@@ -35,9 +37,9 @@ def backtracking():
 
     def column_check(x):
         column = []
-        for i in range(9):
-            column.append(number_table[i][x])
-        temp_list = [i for i in column if i != '']
+        for j in range(9):
+            column.append(number_table[j][x])
+        temp_list = [j for j in column if j != '']
         if len(temp_list) == len(set(temp_list)):
             check = True
         else:
@@ -59,11 +61,11 @@ def backtracking():
         x_cord = quad_check(x) * 3
         y_cord = quad_check(y) * 3
 
-        for i in range(3):
+        for f in range(3):
             for j in range(3):
-                temp = number_table[y_cord + j][x_cord + i]
+                temp = number_table[y_cord + j][x_cord + f]
                 square.append(temp)
-        temp_list = [i for i in square if i != '']
+        temp_list = [a for a in square if a != '']
         if len(temp_list) == len(set(temp_list)):
             check = True
         else:
@@ -92,7 +94,6 @@ def backtracking():
     i = 0
     direction = 0
     while not main_check_bool:
-        lol = number_table[divmod(i, 9)[0]][divmod(i, 9)[1]]
         if static_table[divmod(i, 9)[0]][divmod(i, 9)[1]] == "":
             if number_table[divmod(i, 9)[0]][divmod(i, 9)[1]] == "":
                 number_table[divmod(i, 9)[0]][divmod(i, 9)[1]] = 1
@@ -119,12 +120,17 @@ def backtracking():
                 i = i + 1
         if i == 81:
             main_check_bool = True
-            print(number_table)
 
 
 def draw_board(y, x):
     table[y][x].delete(0, "end")
     table[y][x].insert(0, number_table[y][x])
+
+
+def clear():
+    for i in range(9):
+        for j in range(9):
+            table[i][j].delete(0, "end")
 
 
 if __name__ == "__main__":
