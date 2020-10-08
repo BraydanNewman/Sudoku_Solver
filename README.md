@@ -1,3 +1,3 @@
-# sudoku_solver
+# Sudoku Solver
 Solves Sudoku's
-[Download the executable](https://github.com/BraydanNewman/Sudoku_Solver/Sudoku Solver.exe)
+[Download the executable](https://github.com/BraydanNewman/Sudoku_Solver/SudokuSolver.exe)
