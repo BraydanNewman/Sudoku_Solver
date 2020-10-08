@@ -1,2 +1,2 @@
 # sudoku_solver
-Solves Sudoku in multiple ways
+Solves Sudoku's
