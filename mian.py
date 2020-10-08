@@ -1,6 +1,4 @@
-import random
 from tkinter import *
-import tkinter as tk
 
 window = Tk()
 window.title("SUDOKO")
@@ -12,11 +10,7 @@ def make_board():
     for i in range(0, 9):
         cols = []
         for j in range(0, 9):
-            enterText = tk.StringVar()
-            e = Entry(window, width=5, font=60, textvariable=enterText)
-            lol = random.randint(0, 4)
-            if lol == 3:
-                enterText.set(str(random.randint(1, 9)))
+            e = Entry(window, width=5, font=60)
             e.grid(row=i, column=j)
             cols.append(e)
         table.append(cols)
@@ -25,11 +19,11 @@ def make_board():
 
 
 def backtracking():
-    def full_check(x, y):
-        check = 
-        if row_check(y):
+    def full_check(y, x):
+        if row_check(y) and column_check(x) and square_check(x, y):
             return True
-        elif
+        else:
+            return False
 
     def row_check(y):
         temp_list = [i for i in number_table[y] if i != '']
@@ -79,41 +73,58 @@ def backtracking():
     def extract_numbers():
         number_table.clear()
         for _rows in table:
-            temp = [ ]
+            temp = []
             for _item in _rows:
-                temp.append(_item.get())
+                number = _item.get()
+                if number != "":
+                    number = int(_item.get())
+                temp.append(number)
             number_table.append(temp)
 
-    for rows in table:
-        for item in rows:
-            item.config(state=DISABLED)
-
-    # False if double
     extract_numbers()
-    static_table = number_table
-
-    collision_check = False
-    while not collision_check:
-        cell_num = 0
-
-        extract_numbers()
-
-        pos_check = divmod(cell_num, 9)
-        if static_table[pos_check[0]][pos_check[1]] is None:
-            if number_table[pos_check[0]][pos_check[1]] is not None:
-                number_table[pos_check[0]][pos_check[1]] = number_table[pos_check[0]][pos_check[1]] + 1
+    static_table = []
+    for rows in number_table:
+        static_table_row = []
+        for item in rows:
+            static_table_row.append(item)
+        static_table.append(static_table_row)
+    main_check_bool = False
+    i = 0
+    direction = 0
+    while not main_check_bool:
+        lol = number_table[divmod(i, 9)[0]][divmod(i, 9)[1]]
+        if static_table[divmod(i, 9)[0]][divmod(i, 9)[1]] == "":
+            if number_table[divmod(i, 9)[0]][divmod(i, 9)[1]] == "":
+                number_table[divmod(i, 9)[0]][divmod(i, 9)[1]] = 1
+                draw_board(divmod(i, 9)[0], divmod(i, 9)[1])
+                if full_check(divmod(i, 9)[0], divmod(i, 9)[1]):
+                    direction = 1
+                    i = i + 1
             else:
-                number_table[pos_check[0]][pos_check[1]] = 1
+                number_table[divmod(i, 9)[0]][divmod(i, 9)[1]] = number_table[divmod(i, 9)[0]][divmod(i, 9)[1]] + 1
+                draw_board(divmod(i, 9)[0], divmod(i, 9)[1])
+                if number_table[divmod(i, 9)[0]][divmod(i, 9)[1]] > 9:
+                    number_table[divmod(i, 9)[0]][divmod(i, 9)[1]] = ""
+                    draw_board(divmod(i, 9)[0], divmod(i, 9)[1])
+                    direction = -1
+                    i = i - 1
+                else:
+                    if full_check(divmod(i, 9)[0], divmod(i, 9)[1]):
+                        direction = 1
+                        i = i + 1
+        else:
+            if direction < 0:
+                i = i - 1
+            elif direction > 0:
+                i = i + 1
+        if i == 81:
+            main_check_bool = True
+            print(number_table)
 
-        else:
-            cell_num = cell_num + 1
-        if row_check(pos_check[0]) and column_check(pos_check[1]) and square_check(pos_check[1], pos_check[0]):
-            cell_num = cell_num + 1
-        else:
-            if number_table[pos_check[0]][pos_check[1]] == 9:
-                pass
-            else:
-                number_table[pos_check[0]][pos_check[1]] = number_table[pos_check[0]][pos_check[1]] + 1
+
+def draw_board(y, x):
+    table[y][x].delete(0, "end")
+    table[y][x].insert(0, number_table[y][x])
 
 
 if __name__ == "__main__":
