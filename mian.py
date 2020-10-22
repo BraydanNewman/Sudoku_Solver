@@ -153,6 +153,6 @@ def backtracking(static_table):
 if __name__ == "__main__":
     window = tk.Tk()
     window.title("SUDOKO")
-    # window.iconbitmap('sudoku.ico')
+    window.iconbitmap('sudoku.ico')
     app = GUI(window)
     tk.mainloop()
